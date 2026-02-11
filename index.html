@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Playlist Gift</title>
+  <style>
+    :root{
+      --bg1:#060914;
+      --bg2:#0f1738;
+      --bg3:#00c4b3;
+
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.72);
+      --shadow: 0 12px 40px rgba(0,0,0,0.35);
+
+      --driftDur: 18s;
+
+      
+    }
+
+    html, body { height: 100%; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      overflow-x:hidden;
+      background:
+        radial-gradient(1200px 800px at 15% 20%, var(--bg2), transparent 60%),
+        
+        radial-gradient(900px 700px at 55% 85%, var(--bg1), transparent 60%),
+        #060914;
+      position:relative;
+
+      /* center the container */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 32px 18px;
+      box-sizing:border-box;
+    }
+
+    /* original nebula */
+    .nebula{
+      position:fixed; inset:-25%;
+      filter: blur(60px) saturate(120%);
+      opacity:0.65;
+      pointer-events:none;
+      transform: translate3d(var(--px,0px), var(--py,0px), 0);
+      background:
+        radial-gradient(circle at 20% 25%, rgba(10, 60, 60, 0.35), transparent 10%),
+        radial-gradient(circle at 70% 35%, rgba(41, 23, 10, 0.35), transparent 25%),
+        radial-gradient(circle at 40% 70%, rgba(69, 19, 56, 0.32), transparent 10%),
+        radial-gradient(circle at 80% 80%, rgba(12, 25, 95, 0.4), transparent 50%);
+      animation: drift var(--driftDur) ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes drift{
+      from { transform: translate3d(calc(var(--px,0px) - 18px), calc(var(--py,0px) - 10px), 0) scale(1.02); }
+      to   { transform: translate3d(calc(var(--px,0px) + 18px), calc(var(--py,0px) + 10px), 0) scale(1.06); }
+    }
+
+    stars{
+position:fixed;
+inset:0;
+pointer-events:none;
+opacity: 0.9;
+animation: twinkleA 3.8s ease-in-out infinite alternate;
+background-image:
+radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.95) 50%, transparent 51%),
+radial-gradient(1px 1px at 35% 80%, rgba(255,255,255,0.85) 50%, transparent 51%),
+radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.80) 50%, transparent 51%),
+radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.92) 50%, transparent 51%),
+radial-gradient(1px 1px at 55% 45%, rgba(255,255,255,0.78) 50%, transparent 51%);
+background-size: 180px 180px;
+}
+
+/* add 2 more layers via pseudo elements for dynamic twinkle */
+.stars::before,
+.stars::after{
+content:"";
+position:absolute;
+inset:0;
+pointer-events:none;
+background-repeat: repeat;
+mix-blend-mode: screen;
+}
+
+/* small dense stars */
+.stars::before{
+opacity: 0.65;
+background-image:
+radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9) 50%, transparent 51%),
+radial-gradient(1px 1px at 28% 62%, rgba(255,255,255,0.75) 50%, transparent 51%),
+radial-gradient(1px 1px at 44% 26%, rgba(255,255,255,0.8) 50%, transparent 51%),
+radial-gradient(1px 1px at 63% 72%, rgba(255,255,255,0.9) 50%, transparent 51%),
+radial-gradient(1px 1px at 82% 38%, rgba(255,255,255,0.7) 50%, transparent 51%),
+radial-gradient(1px 1px at 92% 84%, rgba(255,255,255,0.85) 50%, transparent 51%);
+background-size: 140px 140px;
+animation: twinkleB 2.6s ease-in-out infinite alternate;
+}
+
+/* bigger “sparkle” stars */
+.stars::after{
+opacity: 0.55;
+background-image:
+radial-gradient(2px 2px at 18% 30%, rgba(255,255,255,0.95) 45%, transparent 52%),
+radial-gradient(2px 2px at 52% 18%, rgba(255,255,255,0.85) 45%, transparent 52%),
+radial-gradient(2px 2px at 74% 58%, rgba(255,255,255,0.9) 45%, transparent 52%),
+radial-gradient(2px 2px at 34% 78%, rgba(255,255,255,0.8) 45%, transparent 52%);
+background-size: 320px 320px;
+animation: twinkleC 4.4s ease-in-out infinite alternate;
+}
+
+/* dynamic twinkle = opacity + subtle drift */
+@keyframes twinkleA{
+0% { opacity: 0.55; transform: translate3d(0,0,0); filter: brightness(1.05); }
+100% { opacity: 0.95; transform: translate3d(-6px, 4px,0); filter: brightness(1.25); }
+}
+@keyframes twinkleB{
+0% { opacity: 0.35; transform: translate3d(0,0,0); filter: brightness(1.1); }
+100% { opacity: 0.85; transform: translate3d(8px,-6px,0); filter: brightness(1.35); }
+}
+@keyframes twinkleC{
+0% { opacity: 0.25; transform: translate3d(0,0,0); filter: brightness(1.15); }
+100% { opacity: 0.75; transform: translate3d(-10px,8px,0); filter: brightness(1.5); }
+}
+    @keyframes twinkle{ from{opacity:.35} to{opacity:.65} }
+
+    
+
+    .wrap{
+      width: min(980px, 100%);
+      position:relative;
+      z-index: 2;
+    }
+
+    /* ONE floating container */
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .header{
+      display:flex;
+      gap:14px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      padding: 16px 16px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title{
+      margin:0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height:1.1;
+    }
+
+    .cover{
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+      object-fit: cover;
+      flex: 0 0 auto;
+    }
+
+    #water{
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;          /* background layer */
+  opacity: 0.85;
+}
+.wrap{ position: relative; z-index: 2; }  /* keep your card above it */
+
+
+
+    .subLink{
+      display:inline-block;
+      margin-top:8px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      text-decoration:none;
+      border-bottom: 1px solid rgba(255,255,255,0.20);
+      padding-bottom: 2px;
+      width: fit-content;
+    }
+    .subLink:hover{
+      color: var(--text);
+      border-bottom-color: rgba(255,255,255,0.35);
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      min-height: 460px;
+    }
+    @media (max-width: 900px){
+      .content{ grid-template-columns: 1fr; }
+    }
+
+    .left{
+      padding: 12px 12px 16px;
+      border-right: 1px solid var(--border);
+      min-height: 0;
+    }
+    @media (max-width: 900px){
+      .left{ border-right:none; border-bottom:1px solid var(--border); }
+    }
+
+    .right{
+      padding: 12px 12px 16px;
+      min-height: 0;
+    }
+
+    .sectionTitle{
+      margin: 8px 6px 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    /* original track row look */
+    .tracks{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height: 380px;
+      overflow:auto;
+      padding-right: 4px;
+    }
+
+    .track{
+      display:grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 10px;
+      align-items:center;
+      padding: 10px 10px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      cursor:pointer;
+    }
+    .track:hover{ background: rgba(255,255,255,0.06); }
+    .track.active{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.16);
+    }
+    /* match note scrollbar styling */
+.tracks::-webkit-scrollbar{
+width: 10px;
+}
+
+.tracks::-webkit-scrollbar-thumb{
+background: rgba(255,255,255,0.18);
+border-radius: 10px;
+border: 2px solid rgba(0,0,0,0.25);
+}
+
+.tracks::-webkit-scrollbar-track{
+background: transparent;
+}
+
+    .num{
+      width: 28px; height: 28px;
+      border-radius: 10px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .tname{ font-weight: 700; }
+    .listen{
+      color: var(--text);
+      text-decoration:none;
+      font-size: 0.9rem;
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.22);
+      white-space:nowrap;
+    }
+    .listen:hover{ background: rgba(255,255,255,0.10); }
+
+    /* Right panel: embed then note */
+    #spotifyEmbed{
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+    }
+    #embed-iframe{ width: 100%; height: 152px; }
+
+    .note{
+  margin-top: 12px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+  padding: 14px 14px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+
+  /* NEW: keep content inside and scroll */
+  max-height: 220px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+
+/* optional: nicer scrollbars */
+.note::-webkit-scrollbar{ width: 10px; }
+.note::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+  border: 2px solid rgba(0,0,0,0.25);
+}
+.note::-webkit-scrollbar-track{ background: transparent; }
+
+  </style>
+</head>
+
+<canvas id="water"></canvas>
+
+
+<body>
+ 
+
+  <div class="nebula"></div>
+  <div class="stars"></div>
+ 
+
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <img class="cover" src="YOUR_TEMP_IMAGE_URL_OR_DATA_URI" alt="cover" />
+
+        <div>
+          <h1 class="title">For My Ethan.</h1>
+          <a class="subLink" id="playlistLink" target="_blank" rel="noopener noreferrer">Link to Playlist ↗</a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="left">
+          <div class="sectionTitle">Tracklist</div>
+          <div class="tracks" id="tracks"></div>
+        </div>
+
+        <div class="right">
+          <div id="spotifyEmbed">
+            <div id="embed-iframe"></div>
+          </div>
+          <div class="note" id="noteBox">Click a song 🤍</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+  <script>
+    const PLAYLIST_URL = "https://open.spotify.com/playlist/5yRFfmacIr94qLrZLg5V66?si=5db77824e4144aa0";
+    const PLAYLIST_URI = "spotify:playlist:5yRFfmacIr94qLrZLg5V66";
+
+    const tracks = [
+      { 
+      name: "pretty",
+      uri: "spotify:track:7zku2rvsa345C0kwQ4OEyZ",
+      listenUrl: "https://open.spotify.com/track/7zku2rvsa345C0kwQ4OEyZ",
+      note: "textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt textextextetxt"
+    },
+
+      { name: "Forever", uri: "spotify:track:5tuH4TBKnC7tZiUVP2kSRB", listenUrl: "https://open.spotify.com/track/5tuH4TBKnC7tZiUVP2kSRB", note: "Forever" },
+      { name: "Your Universe - Acoustic", uri: "spotify:track:5RfpJJnfTXkIXRG4f1hudc", listenUrl: "https://open.spotify.com/track/5RfpJJnfTXkIXRG4f1hudc", note: "Your Universe - Acoustic" },
+      { name: "The Way I Love You", uri: "spotify:track:1lzvc17qKf2CyIOSWUEH4p", listenUrl: "https://open.spotify.com/track/1lzvc17qKf2CyIOSWUEH4p", note: "The Way I Love You" },
+      { name: "God Knew", uri: "spotify:track:5mLchdybRi2zTQoQ7Uv7s0", listenUrl: "https://open.spotify.com/track/5mLchdybRi2zTQoQ7Uv7s0", note: "God Knew" },
+      { name: "Crashing (feat. Bahari)", uri: "spotify:track:17Efhyf4A96n0EFXKeB7Ya", listenUrl: "https://open.spotify.com/track/17Efhyf4A96n0EFXKeB7Ya", note: "Crashing (feat. Bahari)" },
+      { name: "Would You Fall in Love with Me Again", uri: "spotify:track:3iYeXCdD3d0zlex2v0CpVt", listenUrl: "https://open.spotify.com/track/3iYeXCdD3d0zlex2v0CpVt", note: "Would You Fall in Love with Me Again" },
+      { name: "Fallen", uri: "spotify:track:4mc3rUoMwwiNTHA4al9nNd", listenUrl: "https://open.spotify.com/track/4mc3rUoMwwiNTHA4al9nNd", note: "Fallen" },
+      { name: "Until I Found You", uri: "spotify:track:0T5iIrXA4p5GsubkhuBIKV", listenUrl: "https://open.spotify.com/track/0T5iIrXA4p5GsubkhuBIKV", note: "Until I Found You" },
+      { name: "Sardinas", uri: "spotify:track:50weXDVFM1hUKQERbjwvo7", listenUrl: "https://open.spotify.com/track/50weXDVFM1hUKQERbjwvo7", note: "Sardinas" },
+      { name: "oh to be loved", uri: "spotify:track:7wR4drNkIHfT3JkDbL5jIg", listenUrl: "https://open.spotify.com/track/7wR4drNkIHfT3JkDbL5jIg", note: "oh to be loved" },
+      { name: "Rearrange My World", uri: "spotify:track:3Ku0VYAQ4b6IomnonhjdVv", listenUrl: "https://open.spotify.com/track/3Ku0VYAQ4b6IomnonhjdVv", note: "Rearrange My World" },
+      { name: "be careful with my heart", uri: "spotify:track:6psfhCdWiQOMGNP6rJzRtY", listenUrl: "https://open.spotify.com/track/6psfhCdWiQOMGNP6rJzRtY", note: "be careful with my heart" },
+      { name: "spin you round", uri: "spotify:track:7rulewysad9ow7ICTIIlUe", listenUrl: "https://open.spotify.com/track/7rulewysad9ow7ICTIIlUe", note: "spin you round" }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const tracksEl = $("tracks");
+    const noteBox = $("noteBox");
+    const playlistLink = $("playlistLink");
+
+    let embedController = null;
+
+    function setActive(idx, shouldPlay=true){
+      [...tracksEl.querySelectorAll(".track")].forEach((row, i)=>{
+        row.classList.toggle("active", i === idx);
+      });
+
+      const t = tracks[idx];
+      if (!t) return;
+
+      noteBox.textContent = (t.note && String(t.note).trim()) ? t.note : t.name;
+
+      if (embedController && t.uri){
+        embedController.loadUri(t.uri);
+        if (shouldPlay) embedController.play();
+      }
+    }
+
+    function render(){
+      playlistLink.href = PLAYLIST_URL;
+      tracksEl.innerHTML = "";
+
+      tracks.forEach((t, idx) => {
+        const row = document.createElement("div");
+        row.className = "track";
+
+        const listen = t.listenUrl
+          ? `<a class="listen" href="${t.listenUrl}" target="_blank" rel="noopener noreferrer">Listen ↗</a>`
+          : "";
+
+        row.innerHTML = `
+          <div class="num">${idx+1}</div>
+          <div class="tname">${t.name}</div>
+          <div>${listen}</div>
+        `;
+
+        row.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return;
+          setActive(idx, true);
+        });
+
+        tracksEl.appendChild(row);
+      });
+
+      setActive(0, false);
+    }
+
+    // Parallax nebula (subtle)
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    window.addEventListener("mousemove", (e) => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = (e.clientY / window.innerHeight) * 2 - 1;
+
+      document.documentElement.style.setProperty("--px", clamp(x * 12, -12, 12) + "px");
+      document.documentElement.style.setProperty("--py", clamp(y * 8,  -8,   8) + "px");
+
+      // water hover center
+      document.documentElement.style.setProperty("--mx", (e.clientX / window.innerWidth * 100).toFixed(2) + "%");
+      document.documentElement.style.setProperty("--my", (e.clientY / window.innerHeight * 100).toFixed(2) + "%");
+    });
+
+    // Spotify iFrame API init
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+      const element = document.getElementById("embed-iframe");
+      const options = {
+        width: "100%",
+        height: 152,
+        uri: PLAYLIST_URI,
+        theme: "dark"
+      };
+
+      IFrameAPI.createController(element, options, (controller) => {
+        embedController = controller;
+        render();
+      });
+    };
+
+    render();
+
+    (function(){
+const canvas = document.getElementById("water");
+const ctx = canvas.getContext("2d");
+
+let w, h;
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+
+function resize(){
+w = canvas.width = window.innerWidth;
+h = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+window.addEventListener("mousemove", e => {
+mouseX = e.clientX;
+mouseY = e.clientY;
+});
+
+function draw(){
+ctx.clearRect(0,0,w,h);
+
+// Dynamic hue shift
+const time = Date.now() * 0.001;
+const hue = (200 + Math.sin(time) * 60) % 360;
+
+const gradient = ctx.createRadialGradient(
+  mouseX, mouseY, 0,
+  mouseX, mouseY, 300
+);
+
+gradient.addColorStop(0, `hsla(${hue}, 90%, 75%, 0.35)`);
+gradient.addColorStop(0.4, `hsla(${hue+30}, 85%, 65%, 0.18)`);
+gradient.addColorStop(0.75, `hsla(${hue+60}, 80%, 55%, 0.08)`);
+gradient.addColorStop(1, "rgba(0,0,0,0)");
+
+ctx.globalCompositeOperation = "lighter";
+ctx.fillStyle = gradient;
+ctx.fillRect(0,0,w,h);
+
+requestAnimationFrame(draw);
+
+
+}
+
+draw();
+})();
+    
+  </script>
+
+
+  
+
+
+</body>
+</html>

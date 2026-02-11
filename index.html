@@ -216,19 +216,23 @@ animation: twinkleC 4.4s ease-in-out infinite alternate;
       .content{ grid-template-columns: 1fr; }
     }
     @media (max-width: 520px){
-body{
-padding: 16px 12px;
-align-items: flex-start;
-}
+      body{
+      padding: 16px 12px;
+      align-items: flex-start;
+      }
 
 .content{
 min-height: 0;
 }
 
 .card{
-width: 100%;
-max-height: calc(100dvh - 32px);
+  width: 100%;
+  max-height: calc(100dvh - 32px);
+
+  overflow-y: auto;                /* allow vertical scroll */
+  -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
 }
+
 
 .tracks{
 max-height: 38dvh;
@@ -573,4 +577,5 @@ draw();
 
 </body>
 </html>
+
 
